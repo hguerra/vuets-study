@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <h1>Blog</h1>
-    <button
-      @click="toggleHighlightedPostsVisibility"
-    >{{ showHighlighted ? 'Hide' : 'Show' }} highlighted posts</button>
+    <button @click="toggleHighlightedPostsVisibility">{{ showHighlighted ? 'Hide' : 'Show' }} highlighted posts</button>
     <BlogPost v-for="blogPost in visibleBlogPosts" :post="blogPost" :key="blogPost.title" />
   </div>
 </template>
@@ -11,7 +9,6 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import BlogPost, { Post } from "./components/BlogPost.vue";
-import { AxiosResponse } from "axios";
 
 @Component({
   components: {
@@ -19,28 +16,29 @@ import { AxiosResponse } from "axios";
   }
 })
 export default class App extends Vue {
-
   public showHighlighted = true;
-  private blogPosts: Post[] = [];
 
-  private created() {
-    console.log("The app is created!");
-    this.$http
-      .get("http://localhost:3000/blogposts")
-      .then((response: AxiosResponse) => {
-        this.blogPosts = response.data.map((val: any) => ({
-          title: val.title,
-          body: val.body,
-          author: val.author,
-          datePosted: new Date(val.datePosted),
-          highlighted: val.highlighted
-        }));
-      });
-  }
-
-  private mounted() {
-    console.log("The app is mounted!");
-  }
+  private blogPosts: Post[] = [
+    {
+      title: "Primeiro",
+      body: "Lorem ipsum dolor sit amet.",
+      author: "Heitor",
+      datePosted: new Date(2019, 1, 18)
+    },
+    {
+      title: "Segundo",
+      body: "Lorem ipsum dolor sit amet.",
+      author: "Heitor",
+      datePosted: new Date(2019, 1, 19),
+      highlighted: true
+    },
+    {
+      title: "Terceiro",
+      body: "Lorem ipsum dolor sit amet.",
+      author: "Heitor",
+      datePosted: new Date(2019, 1, 20)
+    }
+  ];
 
   get visibleBlogPosts() {
     return this.blogPosts.filter(
